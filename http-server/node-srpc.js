@@ -2,7 +2,7 @@ const http = require('http')
 
 const srpc = {}
 
-async function handle (raw, resp) {
+async function handle (raw) {
   let body = {}
   try { body = JSON.parse(raw) }
   catch { return ['Body Error', 400] }
@@ -26,7 +26,7 @@ function listener (req, resp) {
   let raw = ''
   req.on('data', chunk => { raw += chunk })
   req.on('end', async () => {
-    const [body, status] = await handle(raw, resp)
+    const [body, status] = await handle(raw)
     resp.writeHead(status, {
       ...cors,
       'Content-Length': Buffer.byteLength(body),

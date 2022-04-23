@@ -4,8 +4,12 @@ A super simple RPC.
 
 ## http-server
 
+### node-srpc
+
+for Nodejs
+
 ```js
-const srpc = require('./srpc.js')
+const srpc = require('./node-srpc.js')
 
 // special init function _
 srpc._() // listen on port 2333 by default
@@ -13,6 +17,21 @@ srpc._() // listen on port 2333 by default
 // the following methods are exported
 srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
+```
+
+### fc-srpc
+
+for Aliyun Function Compute
+
+```js
+const srpc = require('./fc-srpc.js')
+
+// the following methods are exported
+srpc.test = () => 'hello, world!'
+srpc.add = (x, y) => x + y
+
+// special handler function
+exports.handler = srpc._
 ```
 
 ## http-client
