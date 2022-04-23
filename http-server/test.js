@@ -1,6 +1,6 @@
 const jrpc = require('./jrpc.js')
 
-jrpc.init()
+jrpc._()
 
-jrpc._.test = () => 'Hello, world!'
-jrpc._.add = (x, y) => x + y
+jrpc.test = () => 'Hello, world!'
+jrpc.add = (x, y) => x + y

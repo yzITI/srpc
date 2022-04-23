@@ -7,11 +7,12 @@ A super simple RPC.
 ```js
 const jrpc = require('./jrpc.js')
 
-jrpc.init() // listen on port 2333 by default
+// special init function _
+jrpc._() // listen on port 2333 by default
 
 // the following methods are exported
-jrpc._.test = () => 'Hello, world!'
-jrpc._.add = (x, y) => x + y
+jrpc.test = () => 'Hello, world!'
+jrpc.add = (x, y) => x + y
 ```
 
 ## http-client
@@ -20,9 +21,9 @@ jrpc._.add = (x, y) => x + y
 import jrpc from './jrpc.js'
 
 // initialize with endpoint
-jrpc.init('http://localhost:2333/')
+jrpc._('http://localhost:2333/')
 
 // just call the functions!
-jrpc._.test() // Promise -> 'Hello, world!'
-jrpc._.add(1, 2) // Promise -> 3
+jrpc.test() // Promise -> 'Hello, world!'
+jrpc.add(1, 2) // Promise -> 3
 ```
