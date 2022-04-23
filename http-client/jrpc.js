@@ -9,6 +9,9 @@ export default new Proxy({}, {
       method: 'POST', mode: 'cors', cache: 'no-cache',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ _: prop, ':': args })
-    }).then(r => r.json()).then(r => r[':'])
+    }).then(async r => {
+      if (r.status === 200) return (await r.json())[':']
+      else throw (await r.text())
+    })
   }
 })
