@@ -1,29 +1,29 @@
-# JRPC
+# SRPC
 
 A super simple RPC.
 
 ## http-server
 
 ```js
-const jrpc = require('./jrpc.js')
+const srpc = require('./srpc.js')
 
 // special init function _
-jrpc._() // listen on port 2333 by default
+srpc._() // listen on port 2333 by default
 
 // the following methods are exported
-jrpc.test = () => 'Hello, world!'
-jrpc.add = (x, y) => x + y
+srpc.test = () => 'Hello, world!'
+srpc.add = (x, y) => x + y
 ```
 
 ## http-client
 
 ```js
-import jrpc from './jrpc.js'
+import srpc from './srpc.js'
 
 // initialize with endpoint
-jrpc._('http://localhost:2333/')
+srpc._('http://localhost:2333/')
 
 // just call the functions!
-jrpc.test() // Promise -> 'Hello, world!'
-jrpc.add(1, 2) // Promise -> 3
+srpc.test() // Promise -> 'Hello, world!'
+srpc.add(1, 2) // Promise -> 3
 ```

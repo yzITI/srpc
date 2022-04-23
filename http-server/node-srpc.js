@@ -1,15 +1,15 @@
 const http = require('http')
 
-const jrpc = {}
+const srpc = {}
 
 async function handle (raw, resp) {
   let body = {}
   try { body = JSON.parse(raw) }
   catch { return ['Body Error', 400] }
-  if (body._ === '_' || typeof jrpc[body._] !== 'function') return ['Function Not Found', 404]
+  if (body._ === '_' || typeof srpc[body._] !== 'function') return ['Function Not Found', 404]
   if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
   try { // call function
-    const res = await jrpc[body._](...(body[':'] || []))
+    const res = await srpc[body._](...(body[':'] || []))
     return [JSON.stringify({ ':': res }), 200]
   } catch (e) { return ['Internal Error', 500] }
 }
@@ -35,9 +35,9 @@ function listener (req, resp) {
   })
 }
 
-jrpc._ = (port = 2333) => {
+srpc._ = (port = 2333) => {
   const server = http.createServer(listener)
   return new Promise(r => { server.listen(port, r) })
 }
 
-module.exports = jrpc
+module.exports = srpc

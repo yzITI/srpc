@@ -1,6 +1,6 @@
-const jrpc = require('./jrpc.js')
+const srpc = require('./node-srpc.js')
 
-jrpc._()
+srpc._()
 
-jrpc.test = () => 'Hello, world!'
-jrpc.add = (x, y) => x + y
+srpc.test = () => 'Hello, world!'
+srpc.add = (x, y) => x + y
