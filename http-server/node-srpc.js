@@ -8,7 +8,6 @@ async function handle (raw) {
   catch { return ['Body Error', 400] }
   if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
   try { // find function
-    if (body._ === '_') throw 1
     const ns = body._.split('.')
     for (const n of ns) f = f[n]
     if (typeof f !== 'function') throw 1
