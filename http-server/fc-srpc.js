@@ -4,13 +4,18 @@ const srpc = {}
 
 async function handle (req) {
   if (req.method !== 'POST') return ['Method Error', 400]
-  let body = {}
+  let body = {}, f = srpc
   try { body = await getJSONBody(req) }
   catch { return ['Body Error', 400] }
-  if (body._ === '_' || typeof srpc[body._] !== 'function') return ['Function Not Found', 404]
   if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
+  try { // find function
+    if (body._ === '_') throw 1
+    const ns = body._.split('.')
+    for (const n of ns) f = f[n]
+    if (typeof f !== 'function') throw 1
+  } catch { return ['Function Not Found', 404] }
   try { // call function
-    const res = await srpc[body._](...(body[':'] || []))
+    const res = await f(...(body[':'] || []))
     return [JSON.stringify({ ':': res }), 200]
   } catch (e) { return ['Internal Error', 500] }
 }
