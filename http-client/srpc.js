@@ -10,13 +10,9 @@ const getFunction = name => ((...args) => fetch(url, {
 }))
 
 const proxyGet = (target, prop) => {
-  const key = target.key
-  // init function
-  if (!key && prop === '_') return (endpoint = '/') => url = endpoint
-  // rpc call function
-  const newKey = key ? key + '.' + prop : prop, f = getFunction(newKey)
+  const key = target.key, newKey = key ? key + '.' + prop : prop, f = getFunction(newKey)
   f.key = newKey
   return new Proxy(f, { get: proxyGet })
 }
 
-export default new Proxy({}, { get: proxyGet })
+export default new Proxy((endpoint = '/') => url = endpoint, { get: proxyGet })

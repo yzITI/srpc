@@ -1,9 +1,9 @@
 const http = require('http')
 
-const srpc = {}
+const functions = {}
 
 async function handle (raw) {
-  let body = {}, f = srpc
+  let body = {}, f = functions
   try { body = JSON.parse(raw) }
   catch { return ['Body Error', 400] }
   if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
@@ -40,9 +40,10 @@ function listener (req, resp) {
   })
 }
 
-srpc._ = (port = 2333) => {
+module.exports = new Proxy((port = 2333) => {
   const server = http.createServer(listener)
   return new Promise(r => { server.listen(port, r) })
-}
-
-module.exports = srpc
+}, {
+  get: (target, prop) => functions[prop],
+  set: (target, prop, value) => functions[prop] = value
+})

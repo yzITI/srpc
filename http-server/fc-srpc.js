@@ -1,10 +1,10 @@
 const getJSONBody = require('util').promisify(require('body/json'))
 
-const srpc = {}
+const functions = {}
 
 async function handle (req) {
   if (req.method !== 'POST') return ['Method Error', 400]
-  let body = {}, f = srpc
+  let body = {}, f = functions
   try { body = await getJSONBody(req) }
   catch { return ['Body Error', 400] }
   if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
@@ -20,11 +20,12 @@ async function handle (req) {
   } catch (e) { return ['Internal Error', 500] }
 }
 
-srpc._ = async (req, resp) => {
+module.exports = new Proxy(async (req, resp) => {
   const [body, status] = await handle(req)
   resp.setStatusCode(status)
   resp.setHeader('content-type', status === 200 ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8')
   resp.send(body)
-}
-
-module.exports = srpc
+}, {
+  get: (target, prop) => functions[prop],
+  set: (target, prop, value) => functions[prop] = value
+})

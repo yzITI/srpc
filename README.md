@@ -11,8 +11,7 @@ for Nodejs
 ```js
 const srpc = require('./node-srpc.js')
 
-// special init function _
-srpc._() // listen on port 2333 by default
+srpc() // listen on port 2333 by default
 
 // the following methods are exported
 srpc.test = () => 'Hello, world!'
@@ -35,8 +34,8 @@ srpc.add = (x, y) => x + y
 srpc.calc = {}
 srpc.calc.sqrt = x => Math.sqrt(x)
 
-// special handler function
-exports.handler = srpc._
+// entrance function
+exports.handler = srpc
 ```
 
 ## http-client
@@ -45,7 +44,7 @@ exports.handler = srpc._
 import srpc from './srpc.js'
 
 // initialize with endpoint
-srpc._('http://localhost:2333/')
+srpc('http://localhost:2333/')
 
 // just call the functions!
 srpc.test() // Promise -> 'Hello, world!'
