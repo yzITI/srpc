@@ -19,7 +19,7 @@ srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
 // function can be nested!
 srpc.calc = {}
-srpc.calc.add = (x, y) => x + y
+srpc.calc.sqrt = x => Math.sqrt(x)
 ```
 
 ### fc-srpc
@@ -33,7 +33,7 @@ const srpc = require('./fc-srpc.js')
 srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
 srpc.calc = {}
-srpc.calc.add = (x, y) => x + y
+srpc.calc.sqrt = x => Math.sqrt(x)
 
 // special handler function
 exports.handler = srpc._
@@ -50,5 +50,5 @@ srpc._('http://localhost:2333/')
 // just call the functions!
 srpc.test() // Promise -> 'Hello, world!'
 srpc.add(1, 2) // Promise -> 3
-srpc.calc.add(2, 3) // Promise -> 5
+srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ```

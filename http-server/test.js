@@ -4,4 +4,4 @@ srpc._()
 
 srpc.test = () => 'Hello, world!'
 srpc.calc = {}
-srpc.calc.add = (x, y) => x + y
+srpc.calc.sqrt = x => Math.sqrt(x)
