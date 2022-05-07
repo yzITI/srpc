@@ -3,9 +3,9 @@ let url = '/'
 const getFunction = name => ((...args) => fetch(url, {
   method: 'POST', mode: 'cors', cache: 'no-cache',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ _: name, ':': args })
+  body: JSON.stringify({ N: name, A: args })
 }).then(async r => {
-  if (r.status === 200) return (await r.json())[':']
+  if (r.status === 200) return (await r.json()).R
   else throw (await r.text())
 }))
 

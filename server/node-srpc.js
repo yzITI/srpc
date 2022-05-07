@@ -1,20 +1,25 @@
 const http = require('http')
 
 const functions = {}
+let _hooks = {}
 
 async function handle (raw) {
-  let body = {}, f = functions
+  let body = {}, F = functions
   try { body = JSON.parse(raw) }
   catch { return ['Body Error', 400] }
-  if (body[':'] && !(body[':'] instanceof Array)) return ['Arguments Error', 400]
+  if (body.A && !(body.A instanceof Array)) return ['Arguments Error', 400]
   try { // find function
-    const ns = body._.split('.')
-    for (const n of ns) f = f[n]
-    if (typeof f !== 'function') throw 1
+    const ns = body.N.split('.')
+    for (const n of ns) F = F[n]
+    if (typeof F !== 'function') throw 1
   } catch { return ['Function Not Found', 404] }
   try { // call function
-    const res = await f(...(body[':'] || []))
-    return [JSON.stringify({ ':': res }), 200]
+    const ctx = { N: body.N, A: body.A || [], F }
+    if (_hooks.before) await _hooks.before(ctx)
+    if (typeof ctx.R !== 'undefined') return [JSON.stringify({ R: ctx.R }), 200]
+    ctx.R = await F(...ctx.A)
+    if (_hooks.after) await _hooks.after(ctx)
+    return [JSON.stringify({ R: ctx.R }), 200]
   } catch (e) { return ['Internal Error', 500] }
 }
 
@@ -39,7 +44,8 @@ function listener (req, resp) {
   })
 }
 
-module.exports = new Proxy((port = 2333) => {
+module.exports = new Proxy((hooks = {}, port = 2333) => {
+  _hooks = hooks
   const server = http.createServer(listener)
   return new Promise(r => { server.listen(port, r) })
 }, {

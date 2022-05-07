@@ -2,7 +2,7 @@
 
 A super simple RPC.
 
-## http-server
+## Server
 
 ### node-srpc
 
@@ -34,11 +34,11 @@ srpc.add = (x, y) => x + y
 srpc.calc = {}
 srpc.calc.sqrt = x => Math.sqrt(x)
 
-// entrance function
-exports.handler = srpc
+// entrance
+exports.handler = srpc()
 ```
 
-## http-client
+## Client
 
 ```js
 import srpc from './srpc.js'
@@ -50,4 +50,35 @@ srpc('http://localhost:2333/')
 srpc.test() // Promise -> 'Hello, world!'
 srpc.add(1, 2) // Promise -> 3
 srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
+```
+
+## Model
+
+```js
+Request {
+  N: 'function.name',
+  A: [1, 2, 3] // args
+}
+Context {
+  N, A, R, F: Function
+}
+Response {
+  R: {} // return
+}
+```
+
+## Config
+
+```js
+// node-srpc
+srpc(hooks = {
+  before: Context => {}, // abort if assign Context.R
+  after: Context => {}
+}, port = 2333)
+
+// fc-srpc
+srpc(hooks = {
+  before: Context => {}, // abort if assign Context.R
+  after: Context => {}
+})
 ```

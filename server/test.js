@@ -1,6 +1,9 @@
 const srpc = require('./node-srpc.js')
 
-srpc()
+srpc({
+  before: console.log,
+  after: console.log
+})
 
 srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
