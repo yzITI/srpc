@@ -67,7 +67,7 @@ Response {
 }
 ```
 
-## Config
+## Server Config
 
 ```js
 // node-srpc
