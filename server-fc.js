@@ -15,7 +15,7 @@ async function handle (req) {
     if (typeof F !== 'function') throw 1
   } catch { return ['Function Not Found', 404] }
   try { // call function
-    const ctx = { N: body.N, A: body.A || [], F }
+    const ctx = { N: body.N, A: body.A || [], IP: req.clientIP, F }
     if (_hooks.before) await _hooks.before(ctx)
     if (typeof ctx.R !== 'undefined') return [JSON.stringify({ R: ctx.R }), 200]
     ctx.R = await F(...ctx.A)

@@ -3,7 +3,7 @@ const http = require('http')
 const functions = {}
 let _hooks = {}
 
-async function handle (raw) {
+async function handle (raw, IP) {
   let body = {}, F = functions
   try { body = JSON.parse(raw) }
   catch { return ['Body Error', 400] }
@@ -14,7 +14,7 @@ async function handle (raw) {
     if (typeof F !== 'function') throw 1
   } catch { return ['Function Not Found', 404] }
   try { // call function
-    const ctx = { N: body.N, A: body.A || [], F }
+    const ctx = { N: body.N, A: body.A || [], IP, F }
     if (_hooks.before) await _hooks.before(ctx)
     if (typeof ctx.R !== 'undefined') return [JSON.stringify({ R: ctx.R }), 200]
     ctx.R = await F(...ctx.A)
@@ -35,7 +35,7 @@ function listener (req, resp) {
   let raw = ''
   req.on('data', chunk => { raw += chunk })
   req.on('end', async () => {
-    const [body, status] = await handle(raw)
+    const [body, status] = await handle(raw, req.socket.address().address)
     resp.writeHead(status, {
       ...cors,
       'Content-Length': Buffer.byteLength(body),

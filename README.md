@@ -7,7 +7,7 @@ A super simple RPC.
 ### Nodejs
 
 ```js
-const srpc = require('./server.node.js')
+const srpc = require('./server-node.js')
 
 srpc() // listen on port 2333 by default
 
@@ -22,7 +22,7 @@ srpc.calc.sqrt = x => Math.sqrt(x)
 ### Aliyun Function Compute
 
 ```js
-const srpc = require('./server.fc.js')
+const srpc = require('./server-fc.js')
 
 // the following methods are exported
 srpc.test = () => 'Hello, world!'
@@ -39,7 +39,7 @@ exports.handler = srpc()
 ### Browser
 
 ```js
-import srpc from './client.es.js'
+import srpc from './client-es.js'
 
 // initialize with endpoint
 srpc('http://localhost:2333/')
@@ -53,7 +53,7 @@ srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ### Nodejs
 
 ```js
-const srpc = require('./client.node.js')
+const srpc = require('./client-node.js')
 
 // initialize with endpoint
 srpc('https://matrix.yzzx.org/srpc')
@@ -71,7 +71,9 @@ Request {
   A: [1, 2, 3] // args
 }
 Context {
-  N, A, R, F: Function
+  N, A, R,
+  IP: String, // request IP
+  F: Function
 }
 Response {
   R: {} // return
