@@ -35,7 +35,7 @@ function listener (req, resp) {
   let raw = ''
   req.on('data', chunk => { raw += chunk })
   req.on('end', async () => {
-    const [body, status] = await handle(raw, req.socket.address().address)
+    const [body, status] = await handle(raw, req.headers['x-forwarded-for']?.split(',')[0] || req.headers['x-real-ip'] || req.socket.address().address)
     resp.writeHead(status, {
       ...cors,
       'Content-Length': Buffer.byteLength(body),
