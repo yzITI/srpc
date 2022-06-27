@@ -9,7 +9,7 @@ A super simple RPC.
 ```js
 const srpc = require('./server-node.js')
 
-srpc() // listen on port 2333 by default
+srpc() // listen on port 11111 by default
 
 // the following methods are exported
 srpc.test = () => 'Hello, world!'
@@ -42,7 +42,7 @@ exports.handler = srpc()
 import srpc from './client-es.js'
 
 // initialize with endpoint
-srpc('http://localhost:2333/')
+srpc('http://localhost:11111/')
 
 // just call the functions!
 srpc.test() // Promise -> 'Hello, world!'
@@ -87,7 +87,7 @@ Response {
 srpc(hooks = {
   before: Context => {}, // abort if assign Context.R
   after: Context => {}
-}, port = 2333)
+}, port = 11111)
 
 // fc-srpc
 srpc(hooks = {

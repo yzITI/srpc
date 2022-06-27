@@ -44,7 +44,7 @@ function listener (req, resp) {
   })
 }
 
-module.exports = new Proxy((hooks = {}, port = 2333) => {
+module.exports = new Proxy((hooks = {}, port = 11111) => {
   _hooks = hooks
   const server = http.createServer(listener)
   return new Promise(r => { server.listen(port, r) })
