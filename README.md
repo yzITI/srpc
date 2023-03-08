@@ -56,6 +56,8 @@ exports.handler = srpc()
 
 call functions on server and get the return value
 
+[Online Client Demo/Debug](https://yziti.github.io/srpc/)
+
 ### Browser
 
 ```js

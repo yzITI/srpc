@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SRPC Client Demo/Debug</title>
+</head>
+<body>
+  <h1>Please go to the console, SRPC client is exposed as <code>window.srpc</code></h1>
+  <script type="module">
+    console.log('SRPC client is exposed as window.srpc')
+    import srpc from './client-es.js'
+    window.srpc = srpc
+  </script>
+</body>
+</html>
