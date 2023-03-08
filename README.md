@@ -1,8 +1,26 @@
 # SRPC
 
-A super simple RPC.
+A super simple RPC, connect client and server with the least possible code!
+
+**NO dependency, NO schema, NO config, just define functions and CALL!**
+
+```js
+// On Server
+const srpc = require('./server-node.js')
+srpc() // start server
+srpc.add = (x, y) => x + y
+
+// -------------------------------------
+
+// On Client
+import srpc from './client-es.js'
+srpc('http://localhost:11111/') // server endpoint
+console.log(await srpc.add(1, 2)) // 3
+```
 
 ## Server
+
+export functions to be called by clients
 
 ### Nodejs
 
@@ -35,6 +53,8 @@ exports.handler = srpc()
 ```
 
 ## Client
+
+call functions on server and get the return value
 
 ### Browser
 
