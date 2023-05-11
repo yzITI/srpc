@@ -60,9 +60,19 @@ call functions on server and get the return value
 
 ### Browser
 
+Add script to `<head>`
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/yzITI/srpc@main/client.js"></script>
+```
+
+**OR** copy `client-es.js` into your ESM project:
+
 ```js
 import srpc from './client-es.js'
+```
 
+```js
 // initialize with endpoint
 srpc('http://localhost:11111/')
 
