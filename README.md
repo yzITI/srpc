@@ -95,20 +95,23 @@ srpc.add(1, 2) // Promise -> 3
 srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ```
 
-## Model
+## Protocol Model
+
+The following request and response model are used with http `POST` method and `'Content-Type': 'application/json'`.
 
 ```js
 Request {
-  N: 'function.name',
-  A: [1, 2, 3] // args
+  N: 'function.name', // function name
+  A: [1, 2, 3] // args in order
 }
+Response {
+  R: {} // return value
+}
+// Context data model used in hooks
 Context {
   N, A, R,
   IP: String, // request IP
   F: Function
-}
-Response {
-  R: {} // return
 }
 ```
 
