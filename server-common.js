@@ -1,3 +1,5 @@
+// CommonJS SRPC Server
+
 const http = require('http')
 
 const functions = {}

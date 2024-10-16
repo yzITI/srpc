@@ -6,7 +6,7 @@ A super simple RPC, connect client and server with the least possible code!
 
 ```js
 // On Server
-const srpc = require('./server-node.js')
+import srpc from './server-es.js'
 srpc() // start server
 srpc.add = (x, y) => x + y
 
@@ -25,7 +25,8 @@ export functions to be called by clients
 ### Nodejs
 
 ```js
-const srpc = require('./server-node.js')
+import srpc from './server-es.js'
+// const srpc = require('./server-common.js')
 
 srpc() // listen on port 11111 by default
 
@@ -48,8 +49,7 @@ srpc.add = (x, y) => x + y
 srpc.calc = {}
 srpc.calc.sqrt = x => Math.sqrt(x)
 
-// entrance
-exports.handler = srpc()
+exports.handler = srpc() // entrance
 ```
 
 ## Client
@@ -58,7 +58,7 @@ call functions on server and get the return value
 
 [Online Client Demo/Debug](https://yziti.github.io/srpc/)
 
-### Browser
+### Browser Global
 
 Add script to `<head>`
 
@@ -85,14 +85,27 @@ srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ### Nodejs
 
 ```js
-const srpc = require('./client-node.js')
+import srpc from './client-es.js'
+// const srpc = require('./client-common.js')
 
 // initialize with endpoint
-srpc('https://matrix.yzzx.org/srpc')
+srpc('http://localhost:11111/')
 
 srpc.test() // Promise -> 'Hello, world!'
 srpc.add(1, 2) // Promise -> 3
 srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
+```
+
+### Python
+
+```python
+from .client import srpc
+
+srpc('http://localhost:11111/')
+
+srpc.test() # 'Hello, world!'
+srpc.add(1, 2) # 3
+srpc.calc.sqrt(2) # 1.4142135623730951
 ```
 
 ## Protocol Model

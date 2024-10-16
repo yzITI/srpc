@@ -1,4 +1,4 @@
-const srpc = require('./server-node.js')
+const srpc = require('./server-common.js')
 
 srpc({
   before: console.log,

@@ -1,3 +1,5 @@
+// CommonJS SRPC Client
+
 const http = require('http'), https = require('https')
 
 let url = '/', request = () => {}
