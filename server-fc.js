@@ -10,10 +10,12 @@ async function handle (req) {
   let body = {}, F = functions
   try { body = await getJSONBody(req) }
   catch { return ['Body Error', 400] }
-  if (body.A && !(body.A instanceof Array)) return ['Arguments Error', 400]
+  if (!(body.N instanceof Array) || !(body.A instanceof Array)) return ['Arguments Error', 400]
   try { // find function
-    const ns = body.N.split('.')
-    for (const n of ns) F = F[n]
+    for (const n of body.N) {
+      if (!F.hasOwnProperty(n)) throw 1
+      F = F[n]
+    }
     if (typeof F !== 'function') throw 1
   } catch { return ['Function Not Found', 404] }
   try { // call function
@@ -29,7 +31,7 @@ async function handle (req) {
 async function listener (req, resp) {
   const [body, status] = await handle(req)
   resp.setStatusCode(status)
-  resp.setHeader('content-type', status === 200 ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8')
+  resp.setHeader('Content-Type', status === 200 ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8')
   resp.send(body)
 }
 

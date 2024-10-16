@@ -114,7 +114,7 @@ The following request and response model are used with http `POST` method and `'
 
 ```js
 Request {
-  N: 'function.name', // function name
+  N: ['nested', 'f'], // function name
   A: [1, 2, 3] // args in order
 }
 Response {

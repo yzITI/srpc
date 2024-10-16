@@ -4,7 +4,7 @@ const http = require('http'), https = require('https')
 
 let url = '/', request = () => {}
 
-const getFunction = name => ((...args) => new Promise((r, rej) => {
+const getFunction = N => ((...A) => new Promise((r, rej) => {
   const req = request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } }, res => {
     let data = ''
     res.on('data', chunk => data += chunk)
@@ -13,14 +13,14 @@ const getFunction = name => ((...args) => new Promise((r, rej) => {
       else rej(data)
     })
   })
-  req.write(JSON.stringify({ N: name, A: args }))
+  req.write(JSON.stringify({ N, A }))
   req.on('error', rej)
   req.end()
 }))
 
-const proxyGet = (target, prop) => {
-  const key = target.key, newKey = key ? key + '.' + prop : prop, f = getFunction(newKey)
-  f.key = newKey
+const proxyGet = (target, key) => {
+  const N = target.N || [], newN = [...N, key], f = getFunction(newN)
+  f.N = newN
   return new Proxy(f, { get: proxyGet })
 }
 
