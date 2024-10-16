@@ -2,7 +2,7 @@
 
 import requests
 
-class SRPC(object):
+class SRPC:
     def __init__(self, url='', N=[]):
         self.url = url
         self.N = N

@@ -3,12 +3,22 @@ import threading, json
 
 functions = {}
 
+cors = {
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'OPTIONS, POST'
+}
+
 class Handler(BaseHTTPRequestHandler):
     def respond(self, code, msg, ct="text/plain"):
         self.send_response(code)
+        for k in cors:
+            self.send_header(k, cors[k])
         self.send_header("Content-Type", ct)
         self.end_headers()
         self.wfile.write(bytes(msg, "utf-8"))
+    def do_OPTIONS(self):
+        self.respond(204, "")
     def do_GET(self):
         self.fail(400, "Method Error")
     def do_POST(self):
@@ -39,8 +49,7 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(*args):
         pass
 
-
-class SRPC(object):
+class SRPC:
     def __call__(self, port=11111):
         server = ThreadingHTTPServer(("", port), Handler)
         server_thread = threading.Thread(target=server.serve_forever)
