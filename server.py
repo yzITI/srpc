@@ -44,6 +44,10 @@ class Handler(BaseHTTPRequestHandler):
             return self.respond(404, "Function Not Found")
         try: # run function
             ctx = { "N": body["N"], "A": body["A"], "F": F }
+            if self.headers.get("x-forwarded-for"):
+                ctx["IP"] = str(self.headers.get("x-forwarded-for")).split(",")[0]
+            else:
+                ctx["IP"] = self.headers.get("x-real-ip") or self.address_string()
             if callable(_hooks.get("before")):
                 _hooks["before"](ctx)
             if "R" in ctx: # abort
@@ -59,6 +63,7 @@ class Handler(BaseHTTPRequestHandler):
 
 class SRPC:
     def __call__(self, hooks={}, port=11111):
+        global _hooks
         _hooks = hooks
         server = ThreadingHTTPServer(("", port), Handler)
         server_thread = threading.Thread(target=server.serve_forever)
