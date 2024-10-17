@@ -46,7 +46,7 @@ srpc() # listen on port 11111 by default
 
 # Python dict uses []
 srpc["test"] = lambda: "Hello, world!"
-def add(x,  y):
+def add(x, y):
     return x + y
 srpc["add"] = add
 import math
