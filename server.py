@@ -1,3 +1,6 @@
+# Python SRPC Server
+# https://github.com/yzITI/srpc
+
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import threading, json
 

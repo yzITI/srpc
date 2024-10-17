@@ -1,4 +1,5 @@
 // Aliyun Function Compute SRPC Server
+// https://github.com/yzITI/srpc
 
 const getJSONBody = require('util').promisify(require('body/json'))
 

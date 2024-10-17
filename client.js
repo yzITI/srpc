@@ -1,4 +1,5 @@
 // Browser Global SRPC Client
+// https://github.com/yzITI/srpc
 
 const SRPC = () => {
   let url = '/'

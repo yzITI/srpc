@@ -1,4 +1,5 @@
 // CommonJS SRPC Client
+// https://github.com/yzITI/srpc
 
 const http = require('http'), https = require('https')
 

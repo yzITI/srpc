@@ -1,4 +1,5 @@
 // ES Module SRPC Client
+// https://github.com/yzITI/srpc
 
 export const SRPC = () => {
   let url = '/'
