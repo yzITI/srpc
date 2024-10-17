@@ -1,6 +1,6 @@
 # SRPC
 
-A super simple RPC, connect client and server with the least possible code!
+A super simple RPC, connect client and server with the least possible code! The best code for communication is "no" communication.
 
 **NO dependency, NO schema, NO config, just define functions and CALL!**
 
@@ -129,17 +129,17 @@ For development and customization.
 
 ### Protocol Model
 
-The following request and response model are used with http `POST` method and `'Content-Type': 'application/json'`.
+The following request and response model are used with http `POST` method and `'Content-Type': 'application/json'`. **All function names and arguments must be JSON serializable.**
 
 ```js
 Request {
   N: ['nested', 'f'], // function name
-  A: [1, 2, 3] // args in order
+  A: [1, 2, 3] // arguments in order
 }
 Response {
-  R: {} // return value
+  R: {} // function return
 }
-// Context data model used in hooks
+// Context used in hooks
 Context {
   N, A, R,
   IP: String, // request IP
