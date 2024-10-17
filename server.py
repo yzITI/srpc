@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import threading, json
 
 functions = {}
+_hooks = {}
 
 cors = {
   'Access-Control-Allow-Headers': '*',
@@ -34,23 +35,31 @@ class Handler(BaseHTTPRequestHandler):
         except:
             return self.respond(400, "Arguments Error")
         try:
-            f = functions
+            F = functions
             for n in body["N"]:
-                f = f[n]
-            if not callable(f):
+                F = F[n]
+            if not callable(F):
                 raise Exception("")
         except:
             return self.respond(404, "Function Not Found")
-        try:
-            R = f(*body["A"])
-            return self.respond(200, json.dumps({ "R": R }), "application/json")
+        try: # run function
+            ctx = { "N": body["N"], "A": body["A"], "F": F }
+            if callable(_hooks.get("before")):
+                _hooks["before"](ctx)
+            if "R" in ctx: # abort
+                return self.respond(200, json.dumps({ "R": ctx["R"] }), "application/json")
+            ctx["R"] = ctx["F"](*ctx["A"])
+            if callable(_hooks.get("after")):
+                _hooks["after"](ctx)
+            return self.respond(200, json.dumps({ "R": ctx["R"] }), "application/json")
         except:
             return self.respond(500, "Internal Error")
     def log_message(*args):
-        pass
+        pass # disable http server log
 
 class SRPC:
-    def __call__(self, port=11111):
+    def __call__(self, hooks={}, port=11111):
+        _hooks = hooks
         server = ThreadingHTTPServer(("", port), Handler)
         server_thread = threading.Thread(target=server.serve_forever)
         server_thread.start()

@@ -7,10 +7,8 @@ A super simple RPC, connect client and server with the least possible code!
 ```js
 // On Server
 import srpc from './server-es.js'
-srpc() // start server
 srpc.add = (x, y) => x + y
-
-// -------------------------------------
+srpc() // start server
 
 // On Client
 import srpc from './client-es.js'
@@ -20,9 +18,9 @@ console.log(await srpc.add(1, 2)) // 3
 
 ## Server
 
-export functions to be called by clients
+Export functions to be called by clients
 
-### Nodejs
+### Nodejs Server
 
 ```js
 import srpc from './server-es.js'
@@ -30,20 +28,19 @@ import srpc from './server-es.js'
 
 srpc() // listen on port 11111 by default
 
-// the following methods are exported
+// following methods are exported
 srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
-// function can be nested!
-srpc.calc = {}
+srpc.calc = {} // function can be nested!
 srpc.calc.sqrt = x => Math.sqrt(x)
 ```
 
-### Aliyun Function Compute
+### Aliyun Function Compute Server
 
 ```js
 const srpc = require('./server-fc.js')
 
-// the following methods are exported
+// following methods are exported
 srpc.test = () => 'Hello, world!'
 srpc.add = (x, y) => x + y
 srpc.calc = {}
@@ -52,13 +49,29 @@ srpc.calc.sqrt = x => Math.sqrt(x)
 exports.handler = srpc() // entrance
 ```
 
+### Python Server
+
+```python
+from server import srpc
+
+srpc() # listen on port 11111 by default
+
+# Python dict uses []
+srpc["test"] = lambda: "Hello, world!"
+def add(x,  y):
+    return x + y
+srpc["add"] = add
+import math
+srpc["calc"] = { "sqrt": math.sqrt }
+```
+
 ## Client
 
 call functions on server and get the return value
 
 [Online Client Demo/Debug](https://yziti.github.io/srpc/)
 
-### Browser Global
+### Browser Client
 
 Add script to `<head>`
 
@@ -73,8 +86,7 @@ import srpc from './client-es.js'
 ```
 
 ```js
-// initialize with endpoint
-srpc('http://localhost:11111/')
+srpc('http://localhost:11111/') // initialize with endpoint
 
 // just call the functions!
 srpc.test() // Promise -> 'Hello, world!'
@@ -82,24 +94,23 @@ srpc.add(1, 2) // Promise -> 3
 srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ```
 
-### Nodejs
+### Nodejs Client
 
 ```js
 import srpc from './client-es.js'
 // const srpc = require('./client-common.js')
 
-// initialize with endpoint
-srpc('http://localhost:11111/')
+srpc('http://localhost:11111/') // initialize with endpoint
 
 srpc.test() // Promise -> 'Hello, world!'
 srpc.add(1, 2) // Promise -> 3
 srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ```
 
-### Python
+### Python Client
 
 ```python
-from .client import srpc
+from client import srpc
 
 srpc('http://localhost:11111/')
 
@@ -108,7 +119,11 @@ srpc.add(1, 2) # 3
 srpc.calc.sqrt(2) # 1.4142135623730951
 ```
 
-## Protocol Model
+## Advanced
+
+For development and customization.
+
+### Protocol Model
 
 The following request and response model are used with http `POST` method and `'Content-Type': 'application/json'`.
 
@@ -128,18 +143,25 @@ Context {
 }
 ```
 
-## Server Config
+### Server Options
 
 ```js
-// node-srpc
+// Nodejs Server
 srpc(hooks = {
   before: Context => {}, // abort if assign Context.R
   after: Context => {}
 }, port = 11111)
 
-// fc-srpc
+// Aliyun Function Compute Server
 srpc(hooks = {
   before: Context => {}, // abort if assign Context.R
   after: Context => {}
 })
+```
+
+```python
+srpc(hooks={
+  "before": Function(Context),
+  "after": Function(Context)
+}, port=11111)
 ```
