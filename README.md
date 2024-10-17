@@ -4,6 +4,8 @@ A super simple RPC, connect client and server with the least possible code!
 
 **NO dependency, NO schema, NO config, just define functions and CALL!**
 
+**Support both servers and clients of JavaScript and/or Python!**
+
 ```js
 // On Server
 import srpc from './server-es.js'
@@ -114,8 +116,10 @@ from client import srpc
 
 srpc('http://localhost:11111/')
 
-srpc.test() # 'Hello, world!'
-srpc.add(1, 2) # 3
+# Python takes dictionary syntax
+srpc["test"]() # 'Hello, world!'
+srpc["add"](1, 2) # 3
+# dot also works for Python client
 srpc.calc.sqrt(2) # 1.4142135623730951
 ```
 
