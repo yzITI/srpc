@@ -1,18 +1,18 @@
 # SRPC
 
-A super simple RPC, connect client and server with the least possible code! The best code for communication is "no" communication.
+A super simple RPC, connect client and server with the least possible code! The best code for communication is "no" code for communication.
 
 **NO dependency, NO schema, NO config, just define functions and CALL!**
 
-**Support both servers and clients of JavaScript and/or Python!**
+**Support both servers and clients of JavaScript and/or Python!** For example,
 
 ```js
-// On Server
+// On Nodejs Server
 import srpc from './server-es.js'
 srpc.add = (x, y) => x + y
 srpc() // start server
 
-// On Client
+// On Browser Client
 import srpc from './client-es.js'
 srpc('http://localhost:11111/') // server endpoint
 console.log(await srpc.add(1, 2)) // 3
@@ -37,20 +37,6 @@ srpc.calc = {} // function can be nested!
 srpc.calc.sqrt = x => Math.sqrt(x)
 ```
 
-### Aliyun Function Compute Server
-
-```js
-const srpc = require('./server-fc.js')
-
-// following methods are exported
-srpc.test = () => 'Hello, world!'
-srpc.add = (x, y) => x + y
-srpc.calc = {}
-srpc.calc.sqrt = x => Math.sqrt(x)
-
-exports.handler = srpc() // entrance
-```
-
 ### Python Server
 
 ```python
@@ -65,6 +51,20 @@ def add(x,  y):
 srpc["add"] = add
 import math
 srpc["calc"] = { "sqrt": math.sqrt }
+```
+
+### Aliyun Function Compute Server
+
+```js
+const srpc = require('./server-fc.js')
+
+// following methods are exported
+srpc.test = () => 'Hello, world!'
+srpc.add = (x, y) => x + y
+srpc.calc = {}
+srpc.calc.sqrt = x => Math.sqrt(x)
+
+exports.handler = srpc() // entrance
 ```
 
 ## Client
