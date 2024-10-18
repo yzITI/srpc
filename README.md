@@ -4,7 +4,7 @@ A super simple RPC, connect client and server with the least possible code! The 
 
 **NO dependency, NO schema, NO config, just define functions and CALL!**
 
-**Support both servers and clients of JavaScript and/or Python!** For example,
+**Support both servers and clients of JavaScript and/or Python!**
 
 ```js
 // On Nodejs Server
@@ -24,8 +24,11 @@ Export functions to be called by clients
 
 ### Nodejs Server
 
+> Copy the file `server-es.js` or `server-common.js` to your project
+
 ```js
 import srpc from './server-es.js'
+// or using CommonJS
 // const srpc = require('./server-common.js')
 
 srpc() // listen on port 11111 by default
@@ -38,6 +41,8 @@ srpc.calc.sqrt = x => Math.sqrt(x)
 ```
 
 ### Python Server
+
+> Copy the file `server.py` to your project
 
 ```python
 from server import srpc
@@ -55,6 +60,8 @@ srpc["calc"] = { "sqrt": math.sqrt }
 
 ### Aliyun Function Compute Server
 
+> Copy the file `server-fc.js` to your project (only JavaScript FC).
+
 ```js
 const srpc = require('./server-fc.js')
 
@@ -69,25 +76,17 @@ exports.handler = srpc() // entrance
 
 ## Client
 
-call functions on server and get the return value
-
-[Online Client Demo/Debug](https://yziti.github.io/srpc/)
+Call functions on server and get the return value
 
 ### Browser Client
 
-Add script to `<head>`
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/yzITI/srpc@main/client.js"></script>
-```
-
-**OR** copy `client-es.js` into your ESM project:
+> Copy the file `client-es.js` to your project, or using CDN.
 
 ```js
 import srpc from './client-es.js'
-```
+// or using CDN in HTML:
+// <script src="https://cdn.jsdelivr.net/gh/yzITI/srpc@main/client.js"></script>
 
-```js
 srpc('http://localhost:11111/') // initialize with endpoint
 
 // just call the functions!
@@ -98,8 +97,11 @@ srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 
 ### Nodejs Client
 
+> Copy the file `client-es.js` or `client-common.js` to your project
+
 ```js
 import srpc from './client-es.js'
+// or using CommonJS
 // const srpc = require('./client-common.js')
 
 srpc('http://localhost:11111/') // initialize with endpoint
@@ -110,6 +112,8 @@ srpc.calc.sqrt(2) // Promise -> 1.4142135623730951
 ```
 
 ### Python Client
+
+> Copy the file `client.py` to your project
 
 ```python
 from client import srpc

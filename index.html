@@ -3,12 +3,137 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SRPC Client Demo/Debug</title>
+  <title>SRPC</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/default.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <style>
+    select {
+      border: none;
+      border-radius: 0.1rem;
+      padding: 0.1rem;
+      background: white;
+      font-size: 1.1rem;
+    }
+    code {
+      font-size: 1rem;
+    }
+    .panel {
+      width: calc(50% - 1.5rem);
+      margin: 0.25rem;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      background: #eee;
+    }
+    @media (max-width: 960px) {
+      .panel { width: 100% }
+    }
+  </style>
 </head>
-<body>
-  <h1>Please go to the console, SRPC client is exposed as <code>window.srpc</code></h1>
+<body style="margin: 0; padding: 1rem; font-family: sans-serif;">
+  <h1>SRPC</h1>
+  <p>Simplest Server-Client Communication for both JavaScript and Python!</p>
+  <p>Choose your server and client, copy the required file from the <a href="https://github.com/yzITI/srpc">Github Repository</a> to your project. Don't forget to give me a star!</p>
+  <p><b>There is NO dependency, NO schema, NO config. Just define functions and CALL!</b></p>
+  <div style="display: flex; flex-wrap: wrap;">
+    <div class="panel">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <h2 style="margin: 0.5rem;">Server</h2>
+        <select onchange="render()" id="server-select">
+          <option>Nodejs</option>
+          <option>Python</option>
+          <option>Aliyun FC</option>
+        </select>
+      </div>
+      <div id="server-content"></div>
+    </div>
+    <div class="panel">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <h2 style="margin: 0.5rem;">Client</h2>
+        <select onchange="render()" id="client-select">
+          <option>Browser</option>
+          <option>Nodejs</option>
+          <option>Python</option>
+        </select>
+      </div>
+      <div id="client-content"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+const serverContents = {
+'Nodejs': `<pre><code class="language-javascript">import srpc from './server-es.js'
+// or using CommonJS:
+// const srpc = require('./server-common.js')
+
+srpc() // listen on port 11111 by default
+
+// following methods are exported
+srpc.test = () => 'Hello, world!'
+srpc.add = (x, y) => x + y
+srpc.calc = {} // function can be nested!
+srpc.calc.sqrt = x => Math.sqrt(x)</code></pre>`,
+'Python': `<pre><code class="language-python">from server import srpc
+
+srpc() # listen on port 11111 by default
+
+# Python dict uses []
+srpc["test"] = lambda: "Hello, world!"
+def add(x, y):
+    return x + y
+srpc["add"] = add
+import math
+srpc["calc"] = { "sqrt": math.sqrt }</code></pre>`,
+'Aliyun FC': `<pre><code class="language-javascript">const srpc = require('./server-fc.js')
+
+// following methods are exported
+srpc.test = () => 'Hello, world!'
+srpc.add = (x, y) => x + y
+srpc.calc = {}
+srpc.calc.sqrt = x => Math.sqrt(x)
+
+exports.handler = srpc() // entrance</code></pre>`
+}
+const clientContents = {
+'Browser': `<pre><code class="language-javascript">import srpc from './client-es.js'
+// or using CDN in HTML:
+// &lt;script src="https://cdn.jsdelivr.net/gh/yzITI/srpc@main/client.js"&gt;&lt;/script&gt;
+
+srpc('http://localhost:11111/') // initialize with endpoint
+
+// just call the functions!
+srpc.test() // Promise -> 'Hello, world!'
+srpc.add(1, 2) // Promise -> 3
+srpc.calc.sqrt(2) // Promise -> 1.4142135623730951</code></pre>
+<b>You can play with the browser client in the console of this page!</b>`,
+'Nodejs': `<pre><code class="language-javascript">import srpc from './client-es.js'
+// or using CommonJS:
+// const srpc = require('./client-common.js')
+
+srpc('http://localhost:11111/') // initialize with endpoint
+
+srpc.test() // Promise -> 'Hello, world!'
+srpc.add(1, 2) // Promise -> 3
+srpc.calc.sqrt(2) // Promise -> 1.4142135623730951</code></pre>`,
+'Python': `<pre><code class="language-python">from client import srpc
+
+srpc('http://localhost:11111/')
+
+# Python takes dictionary syntax
+srpc["test"]() # 'Hello, world!'
+srpc["add"](1, 2) # 3
+# dot also works for Python client
+srpc.calc.sqrt(2) # 1.4142135623730951</code></pre>`
+}
+    function render () {
+      const s = document.getElementById('server-select').value
+      const c = document.getElementById('client-select').value
+      document.getElementById('server-content').innerHTML = serverContents[s]
+      document.getElementById('client-content').innerHTML = clientContents[c]
+      setTimeout(hljs.highlightAll)
+    }
+    render()
+  </script>
   <script type="module">
-    console.log('SRPC client is exposed as window.srpc')
+    console.log('SRPC client is here! You can play with window.srpc')
     import srpc from './client-es.js'
     window.srpc = srpc
   </script>
