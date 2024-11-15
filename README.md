@@ -7,10 +7,10 @@ Simplest Server-Client Communication for both JavaScript and Python! The best co
 **Support both servers and clients of JavaScript and/or Python!**
 
 ```js
-// On Nodejs Server
-import srpc from './server-es.js'
-srpc.add = (x, y) => x + y
-srpc() // start server
+// On Python Server
+from server import srpc
+srpc() # start server on port 11111
+srpc["add"] = lambda x, y: x + y
 
 // On Browser Client
 import srpc from './client-es.js'
