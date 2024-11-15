@@ -1,6 +1,6 @@
 # SRPC
 
-A super simple RPC, connect client and server with the least possible code! The best code for communication is "no" code for communication.
+Simplest Server-Client Communication for both JavaScript and Python! The best code for communication is *no* code for communication.
 
 **NO dependency, NO schema, NO config, just define functions and CALL!**
 
