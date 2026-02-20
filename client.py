@@ -11,8 +11,11 @@ class SRPC:
         if len(self.N) == 0:
             self.url = A[0]
             return self.url
-        res = requests.post(self.url, json={ 'N': self.N, 'A': A })
-        res.raise_for_status()
+        try:
+            res = requests.post(self.url, json={ 'N': self.N, 'A': A })
+            res.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            raise Exception(f"HTTP Error {e.response.status_code}: {e.response.content.decode()}")
         return res.json()['R']
     def __getattr__(self, key):
         return SRPC(self.url, self.N + [key])
@@ -20,3 +23,4 @@ class SRPC:
         return SRPC(self.url, self.N + [key])
 
 srpc = SRPC()
+
