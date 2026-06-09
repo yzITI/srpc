@@ -14,8 +14,9 @@ async function handle (req) {
   if (!(body.N instanceof Array) || !(body.A instanceof Array)) return ['Arguments Error', 400]
   try { // find function
     for (const n of body.N) {
-      if (!F.hasOwnProperty(n)) throw 1
+      if (!F.hasOwnProperty(n) || (typeof F === 'function' && n === 'prototype')) throw 1
       F = F[n]
+      if (typeof F !== 'object' && typeof F !== 'function') throw 1
     }
     if (typeof F !== 'function') throw 1
   } catch { return ['Function Not Found', 404] }
