@@ -24,7 +24,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.respond(204, "")
     def do_GET(self):
-        self.fail(400, "Method Error")
+        self.respond(400, "Method Error")
     def do_POST(self):
         try:
             L = int(self.headers.get("Content-Length"))
